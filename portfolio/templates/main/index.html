@@ -15,14 +15,12 @@
         <h4 class="hero-role mb-3">{{ profile.tagline }}</h4>
         <p>{{ profile.about }}</p>
 
-        <!-- ✅ GitHub & LinkedIn links matching project style -->
         <div class="project-links mt-4">
           {% if profile.github_url %}
           <a href="{{ profile.github_url }}" target="_blank" class="project-link">
             <i class="fa-brands fa-github"></i> GitHub
           </a>
           {% endif %}
-
           {% if profile.linkedin_url %}
           <a href="{{ profile.linkedin_url }}" target="_blank" class="project-link">
             <i class="fa-brands fa-linkedin"></i> LinkedIn
@@ -32,16 +30,12 @@
       </div>
 
       <div class="col-lg-6 text-center">
-        {% if profile.profile_image %}
-        <img src="{{ profile.profile_image.url }}" alt="profile" class="hero-image">
-        {% endif %}
+        <img src="{% static 'images/profile/profile.jpg' %}" alt="profile" class="hero-image">
       </div>
 
     </div>
   </div>
 </section>
-
-
 
 <!-- ===== EDUCATION SECTION ===== -->
 <section id="education">
@@ -51,22 +45,11 @@
     {% for e in education %}
     <div class="col-lg-12 mb-4" data-aos="fade-up">
       <div class="education-card">
-
         <h4>{{ e.institution }}</h4>
         <p class="text-muted">{{ e.degree }}</p>
-
-        {% if e.location %}
-        <p><i class="fa-solid fa-location-dot"></i> {{ e.location }}</p>
-        {% endif %}
-
-        {% if e.grade %}
-        <p><strong>Grade:</strong> {{ e.grade }}</p>
-        {% endif %}
-
-        {% if e.description %}
-        <p>{{ e.description }}</p>
-        {% endif %}
-
+        {% if e.location %}<p><i class="fa-solid fa-location-dot"></i> {{ e.location }}</p>{% endif %}
+        {% if e.grade %}<p><strong>Grade:</strong> {{ e.grade }}</p>{% endif %}
+        {% if e.description %}<p>{{ e.description }}</p>{% endif %}
       </div>
     </div>
     {% empty %}
@@ -75,8 +58,7 @@
   </div>
 </section>
 
-
-<!-- ===== FEATURED SKILLS SECTION ===== -->
+<!-- ===== FEATURED SKILLS ===== -->
 <section id="skills">
   <div class="container">
     <div class="d-flex justify-content-between align-items-center">
@@ -87,9 +69,7 @@
     <div class="row mt-4">
       {% for s in featured_skills %}
       <div class="col-lg-6 mb-4" data-aos="fade-up">
-        
         <div class="skill-card-interactive h-100">
-
           <div class="d-flex justify-content-between align-items-center mb-2">
             <div class="d-flex align-items-center gap-2">
               <i class="{{ s.icon|default:'fa-solid fa-code' }} fa-lg"></i>
@@ -97,7 +77,6 @@
             </div>
             <span class="badge-skill">{{ s.proficiency }}%</span>
           </div>
-
           <p class="project-text mb-3">{{ s.description }}</p>
 
           {% if s.tags.all %}
@@ -107,18 +86,14 @@
             {% endfor %}
           </div>
           {% endif %}
-
         </div>
-
       </div>
-      {% empty %}
-      <p>No featured skills yet.</p>
       {% endfor %}
     </div>
   </div>
 </section>
 
-<!-- ===== FEATURED PROJECTS SECTION ===== -->
+<!-- ===== FEATURED PROJECTS ===== -->
 <section id="projects" class="py-5">
   <div class="container">
     <div class="d-flex justify-content-between align-items-center">
@@ -132,11 +107,9 @@
 
         <div class="project-card d-flex align-items-center gap-3">
 
-          {% if p.image %}
           <div class="project-image-wrapper">
-            <img src="{{ p.image.url }}" alt="{{ p.title }}">
+            <img src="{% static 'images/projects/' %}{{ p.image }}" alt="{{ p.title }}">
           </div>
-          {% endif %}
 
           <div class="project-content flex-grow-1">
             <h4>{{ p.title }}</h4>
@@ -148,17 +121,15 @@
               {% endfor %}
             </div>
 
-            <!-- ✅ GitHub & Demo modern links -->
             <div class="project-links mt-3">
               {% if p.github_url %}
               <a href="{{ p.github_url }}" target="_blank" class="project-link">
                 <i class="fa-brands fa-github"></i> GitHub
               </a>
               {% endif %}
-
               {% if p.live_url %}
               <a href="{{ p.live_url }}" target="_blank" class="project-link">
-                <i class="fa-brands fa-linkedin"></i> Demo
+                <i class="fa-solid fa-globe"></i> Live Demo
               </a>
               {% endif %}
             </div>
@@ -167,15 +138,12 @@
         </div>
 
       </div>
-      {% empty %}
-      <p>No featured projects yet.</p>
       {% endfor %}
     </div>
   </div>
 </section>
 
-
-<!-- ===== CONTACT SECTION ===== -->
+<!-- ===== CONTACT ===== -->
 <section id="contact" class="py-5">
   <div class="container">
     <h2 class="section-title text-center">Get In Touch</h2>
@@ -183,38 +151,16 @@
 
     <form method="POST" action="{% url 'main:contact' %}" class="contact-form glass-card p-4 mx-auto" style="max-width: 750px;">
       {% csrf_token %}
-
       <div class="row g-3">
-
-        <div class="col-md-6">
-          <label class="form-label">Full Name</label>
-          <input type="text" name="name" class="form-control form-input" placeholder="Your Full Name" required>
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">Email Address</label>
-          <input type="email" name="email" class="form-control form-input" placeholder="your@email.com" required>
-        </div>
-
-        <div class="col-12">
-          <label class="form-label">Phone Number</label>
-          <input type="text" name="phone" class="form-control form-input" placeholder="+91 XXXXXXXXXX">
-        </div>
-
-        <div class="col-12">
-          <label class="form-label">Message</label>
-          <textarea name="message" rows="5" class="form-control form-input" placeholder="Tell me about your project..." required></textarea>
-        </div>
-
+        <div class="col-md-6"><label class="form-label">Full Name</label><input type="text" name="name" class="form-control form-input" required></div>
+        <div class="col-md-6"><label class="form-label">Email Address</label><input type="email" name="email" class="form-control form-input" required></div>
+        <div class="col-12"><label class="form-label">Phone Number</label><input type="text" name="phone" class="form-control form-input"></div>
+        <div class="col-12"><label class="form-label">Message</label><textarea name="message" rows="5" class="form-control form-input" required></textarea></div>
       </div>
 
-      <button type="submit" class="send-btn mt-4">
-        <i class="fa-solid fa-paper-plane"></i> Send Message
-      </button>
-
+      <button type="submit" class="send-btn mt-4"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
     </form>
   </div>
 </section>
-
 
 {% endblock %}
