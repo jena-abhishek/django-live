@@ -1,0 +1,45 @@
+<footer class="footer py-4 mt-5">
+    <div class="container text-center">
+
+        {% if profile %}
+        <p class="mb-2 fw-semibold">{{ profile.name }}</p>
+
+        <div class="d-flex justify-content-center gap-3 social-icons mb-3">
+
+            {% if profile.github_url %}
+            <a href="{{ profile.github_url }}" target="_blank" class="text-white fs-5">
+                <i class="fab fa-github"></i>
+            </a>
+            {% endif %}
+
+            {% if profile.linkedin_url %}
+            <a href="{{ profile.linkedin_url }}" target="_blank" class="text-white fs-5">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            {% endif %}
+
+            {% if profile.email %}
+            <a href="mailto:{{ profile.email }}" class="text-white fs-5">
+                <i class="fas fa-envelope"></i>
+            </a>
+            {% endif %}
+
+            {% if profile.phone %}
+            <a href="tel:{{ profile.phone }}" class="text-white fs-5">
+                <i class="fas fa-phone"></i>
+            </a>
+            {% endif %}
+
+        </div>
+
+        {% if profile.location %}
+        <p class="text-light small mb-2"><i class="fas fa-location-dot me-1"></i>{{ profile.location }}</p>
+        {% endif %}
+        {% endif %}
+
+        <p class="text-light small mb-0">
+            © {{ profile.name|default:"Portfolio" }} {{ now|date:"Y" }}. All Rights Reserved.
+        </p>
+
+    </div>
+</footer>

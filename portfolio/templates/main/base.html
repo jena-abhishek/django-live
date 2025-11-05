@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ profile.name }} - Portfolio{% endblock %}</title>
+
+    {% load static %}
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
+    <div class="container">
+
+        <a class="navbar-brand fw-bold" href="{% url 'main:home' %}">
+            <span class="brand-text">{{ profile.name }}</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item"><a class="nav-link" href="{% url 'main:home' %}">Home</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="{% url 'main:home' %}#about">About</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="{% url 'main:home' %}#education">Education</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="{% url 'main:home' %}#skills">Skills</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="{% url 'main:home' %}#projects">Projects</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="{% url 'main:home' %}#contact">Contact</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="{% url 'main:skills_list' %}">All Skills</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="{% url 'main:projects_list' %}">All Projects</a></li>
+
+            </ul>
+        </div>
+
+    </div>
+</nav>
+
+<!-- Page Content -->
+<main class="pt-5">
+    {% block content %}{% endblock %}
+</main>
+
+<!-- FOOTER -->
+{% include 'main/includes/footer.html' %}
+
+<!-- Back To Top Button -->
+<button type="button" class="btn btn-floating btn-lg" id="btn-back-to-top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/script.js' %}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+AOS.init({
+  duration: 900,
+  once: true,
+  easing: 'ease-out-cubic'
+});
+</script>
+
+<script>
+document.querySelectorAll('.skill-card-interactive').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width/2;
+    const y = e.clientY - rect.top - rect.height/2;
+    card.style.transform = `translateY(-8px) rotateX(${ -y/20 }deg) rotateY(${ x/20 }deg)`;
+  });
+
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'translateY(0) rotateX(0) rotateY(0)';
+  });
+});
+</script>
+
+{% if messages %}
+<div id="toast-container">
+  {% for message in messages %}
+  <div class="toast-message {{ message.tags }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<script>
+  // Auto remove toast after 4 seconds
+  setTimeout(() => {
+    document.getElementById("toast-container")?.remove();
+  }, 4000);
+</script>
+
+
+</body>
+</html>

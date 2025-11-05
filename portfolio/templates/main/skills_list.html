@@ -1,0 +1,38 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <h2 class="section-title mb-4">All Skills</h2>
+    <div class="row">
+      {% for s in skills %}
+      <div class="col-sm-6 col-lg-4 mb-4">
+        <div class="glass-card skill-card h-100 p-4 d-flex flex-column">
+          <div class="d-flex align-items-center mb-2">
+            <i class="{{ s.icon|default:'fas fa-code' }} me-2"></i>
+            <strong>{{ s.name }}</strong>
+            <span class="ms-auto badge tag-badge">{{ s.proficiency }}%</span>
+          </div>
+          <p class="text-muted small mb-2">{{ s.description|default:"" }}</p>
+          {% if s.tags.all %}
+          <div class="d-flex flex-wrap gap-1">
+            {% for tag in s.tags.all %}
+              <span class="badge rounded-pill bg-light text-primary border">{{ tag.name }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% empty %}
+        <p>No skills added yet.</p>
+      {% endfor %}
+    </div>
+
+    {% if profile.tech_summary %}
+    <div class="mt-5 p-4 rounded-3 bg-light border">
+      <h5 class="mb-2">{{ profile.tech_summary_title }}</h5>
+      <p class="mb-0">{{ profile.tech_summary }}</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

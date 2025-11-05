@@ -1,0 +1,61 @@
+{% extends 'main/base.html' %}
+{% block content %}
+
+<section id="projects" class="py-5">
+  <div class="container">
+    <h2 class="section-title mb-4">All Projects</h2>
+
+    <div class="row g-4">
+      {% for p in projects %}
+      <div class="col-md-6 col-lg-4">
+
+        <div class="project-card glass-card h-100 d-flex flex-column">
+
+          {% if p.image %}
+          <div class="project-image-wrapper-full">
+            <img src="{{ p.image.url }}" alt="{{ p.title }}">
+          </div>
+          {% endif %}
+
+          <div class="project-content p-3 d-flex flex-column flex-grow-1">
+
+            <h4 class="mb-2">{{ p.title }}</h4>
+            <p class="project-text">{{ p.description }}</p>
+
+            <div class="mt-2">
+              {% for tech in p.tech_list %}
+              <span class="badge tag-badge">{{ tech }}</span>
+              {% endfor %}
+
+              {% for tag in p.tags.all %}
+              <span class="badge tag-badge">{{ tag.name }}</span>
+              {% endfor %}
+            </div>
+
+            <!-- ✅ Clean GitHub + Demo Links -->
+            <div class="project-links mt-3">
+              {% if p.github_url %}
+              <a href="{{ p.github_url }}" target="_blank" class="project-link">
+                <i class="fa-brands fa-github"></i> GitHub
+              </a>
+              {% endif %}
+
+              {% if p.live_url %}
+              <a href="{{ p.live_url }}" target="_blank" class="project-link">
+                <i class="fa-brands fa-linkedin"></i> Demo
+              </a>
+              {% endif %}
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      {% empty %}
+      <p>No projects added yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}
