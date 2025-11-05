@@ -6,7 +6,11 @@ class Profile(models.Model):
     name = models.CharField(max_length=100, default="Your Name")
     tagline = models.CharField(max_length=200, default="Full Stack Developer")
     about = models.TextField(blank=True)
-    profile_image = models.ImageField(upload_to='profile/', blank=True, null=True)
+
+    # ✅ CHANGED from ImageField → URLField
+    profile_image = models.URLField(max_length=500, blank=True, null=True)
+
+    # CV file can stay as file upload (optional)
     cv_file = models.FileField(upload_to='cv/', blank=True, null=True)
 
     # Social
@@ -27,9 +31,9 @@ class Profile(models.Model):
 # ---------- Skills ----------
 class SkillTag(models.Model):
     name = models.CharField(max_length=40, unique=True)
-
     def __str__(self):
         return self.name
+
 
 class Skill(models.Model):
     SKILL_TYPES = [
@@ -39,11 +43,11 @@ class Skill(models.Model):
     ]
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-    proficiency = models.PositiveIntegerField(default=80)  # 0–100
+    proficiency = models.PositiveIntegerField(default=80)
     skill_type = models.CharField(max_length=20, choices=SKILL_TYPES, default='technical')
-    icon = models.CharField(max_length=50, blank=True, help_text="Icon class (e.g. fab fa-python)")
+    icon = models.CharField(max_length=50, blank=True)
     tags = models.ManyToManyField(SkillTag, blank=True, related_name='skills')
-    is_featured = models.BooleanField(default=False)  # show on home
+    is_featured = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-is_featured', 'skill_type', 'name']
@@ -70,22 +74,26 @@ class Education(models.Model):
         return f"{self.degree} - {self.institution}"
 
 
-# ---------- Projects ----------
+# ---------- Project ----------
 class ProjectTag(models.Model):
     name = models.CharField(max_length=40, unique=True)
     def __str__(self):
         return self.name
 
+
 class Project(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
-    image = models.ImageField(upload_to='projects/', blank=True, null=True)
-    technologies = models.CharField(max_length=300, help_text="Comma-separated or keep blank", blank=True)
+
+    # ✅ CHANGED from ImageField → URLField
+    image = models.URLField(max_length=500, blank=True, null=True)
+
+    technologies = models.CharField(max_length=300, blank=True, help_text="Comma-separated or keep blank")
     tags = models.ManyToManyField(ProjectTag, blank=True, related_name='projects')
     github_url = models.URLField(blank=True, null=True)
     live_url = models.URLField(blank=True, null=True)
     start_date = models.DateField(blank=True, null=True)
-    end_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(blank=True, null=True)
     is_featured = models.BooleanField(default=False)
 
     class Meta:
