@@ -22,6 +22,9 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # ---- Copy Project Files ----
 COPY . /app/
 
+# ---- Create media folder ----
+RUN mkdir -p /app/media
+
 # ---- Collect Static Files ----
 RUN python manage.py collectstatic --noinput
 
