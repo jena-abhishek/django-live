@@ -3,15 +3,14 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY – SECRET KEY
-SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key-change-in-prod")
+SECRET_KEY = 'replace-this-in-production'
+DEBUG = False
 
-# DEBUG (True locally, False on Render automatically)
-DEBUG = os.environ.get("RENDER", None) is None
+ALLOWED_HOSTS = ['*']  # Allow Vercel & localhost
 
-# ALLOWED HOSTS — allow Render domain
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", ".onrender.com"]
-
+# ----------------------
+#      INSTALLED APPS
+# ----------------------
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -19,14 +18,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'main',
 ]
 
+# ----------------------
+#       MIDDLEWARE
+# ----------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
-    # ✅ Required for static files on Render
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    # ✅ Required for serving static files on Vercel
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -41,7 +44,7 @@ ROOT_URLCONF = 'portfolio.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / "templates"],   # ✅ Using custom templates folder
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -56,7 +59,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'portfolio.wsgi.application'
 
-# ✅ SQLite (works on Render too)
+# ----------------------
+#        DATABASE
+# ----------------------
+# ✅ SQLite local - Works fine on Vercel (read-only runtime, OK for portfolio)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -64,18 +70,31 @@ DATABASES = {
     }
 }
 
-# STATIC FILES (IMPORTANT FOR RENDER 🚀)
+# ----------------------
+#     STATIC FILES
+# ----------------------
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']  # for local usage
-STATIC_ROOT = BASE_DIR / 'staticfiles'     # Render collects files here
 
-# ✅ Tell Django to let WhiteNoise serve static files
+# Where your STATIC files are stored for dev
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+# Where Vercel will collect static into
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# ✅ Whitenoise storage for compressed static files
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# MEDIA FILES
+# ----------------------
+#       MEDIA (Not persistent on Vercel)
+# ----------------------
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
 
+# ----------------------
+#   MISC PROJECT SETTINGS
+# ----------------------
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
